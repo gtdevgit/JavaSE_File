@@ -1,10 +1,7 @@
 package com.training.tetris;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -12,7 +9,7 @@ public class Main {
     // ".\fichier\file.txt"
     // private static String pathname;
 
-    private static Map<Character, Integer> map = new HashMap<>();
+    private static TreeMap<Character, Integer> map = new TreeMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
 	    // write your code here
@@ -63,12 +60,8 @@ public class Main {
     }
 
     private static void afficher(){
-/*        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + " => " + entry.getValue());
-        }*/
-        List<Character> sortedKeys = map.keySet().stream().sorted().toList();
-        for (Character c : sortedKeys) {
-            System.out.println(c + "\t (unicode: " + (int) c + ") :\t" + map.get(c));
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + "\t (unicode: " + (int) entry.getKey() + ") :\t" + entry.getValue());
         }
     }
 }
