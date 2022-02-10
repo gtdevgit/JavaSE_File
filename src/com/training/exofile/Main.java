@@ -50,8 +50,7 @@ public class Main {
         System.out.println(data);
         Character c = (char) data;
         int count = map.getOrDefault(c, 0);
-        count++;
-        map.put(c, count);
+        map.put(c, ++count);
     }
 
     private static void afficher(){
