@@ -1,10 +1,8 @@
 package com.training.tetris;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -14,84 +12,63 @@ public class Main {
     // ".\fichier\file.txt"
     // private static String pathname;
 
-    private static Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    private static Map<Character, Integer> map = new HashMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
 	    // write your code here
-        Scanner scanner = new Scanner(System.in);
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
             System.out.println("Enter file patch or enter to use default file path (try '.\\fichier\\file.txt'): .");
 
             String pathname = scanner.nextLine();
             System.out.println(pathname);
 
-            if (pathname.isEmpty())
+            if (pathname.isEmpty()) {
                 // default file path
                 pathname = ".\\fichier\\file.txt";
+            }
 
             File file = new File(pathname);
-            if (!file.exists())
+            if (!file.exists()) {
                 throw new FileNotFoundException(file.getPath());
+            }
 
             System.out.println(String.format("File \"%s\" was found", file.getAbsolutePath()));
 
             // read file
-            Reader fileReader = new FileReader(pathname);
-            try {
-                try {
-                    int data = fileReader.read();
-                    while(data != -1) {
-                        //do something with data...
-                        countCaractere(data);
-
-                        data = fileReader.read();
-                    }
+            try (Reader fileReader = new FileReader(pathname)) {
+                int data = fileReader.read();
+                while(data != -1) {
+                    countCaractere(data);
+                    data = fileReader.read();
                 }
-                finally {
-                    fileReader.close();
-                }
-            }
-            catch (java.io.IOException e){
-                System.err.println(e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        finally {
-            scanner.close();
-        }
-
         afficher();
     }
 
     private static void countCaractere(int data){
         System.out.println(data);
-
-        char c = (char) data;
-        if (map.isEmpty()) {
-            map.put(data, 1);
-            return;
-        }
-
-        Integer count = map.get(data);
-        if (count == null) {
-            map.put(data, 1);
-        } else {
+        Character c = (char) data;
+        try {
+            int count = map.get(c);
             count++;
-            map.replace(data, count);
+            map.put(c, count);
+        }
+        catch (NullPointerException e) {
+            map.put(c, 1);
         }
     }
 
     private static void afficher(){
-        for (Map.Entry m : map.entrySet()) {
-            System.out.println(m.getKey() + " => " + m.getValue());
-            try {
-                // m.getKey est un objet, il faut le récupérer en tant que int avant de le caster en char.
-                char c = (char) (int) m.getKey();
-                System.out.println(m.getKey() + " => " + m.getValue());
-            }
-            catch (ClassCastException e){
-                System.err.println("***" + m.getKey() +"***");
-            }
+/*        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " => " + entry.getValue());
+        }*/
+        List<Character> sortedKeys = map.keySet().stream().sorted().toList();
+        for (Character c : sortedKeys) {
+            System.out.println(c + "\t (unicode: " + (int) c + ") :\t" + map.get(c));
         }
     }
 }
