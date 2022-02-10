@@ -66,31 +66,26 @@ public class Main {
     private static void countCaractere(int data){
         System.out.println(data);
 
-        //try {
-            char c = (char) data;
-            if (map.isEmpty()) {
-                map.put(data, 1);
-                return;
-            }
+        char c = (char) data;
+        if (map.isEmpty()) {
+            map.put(data, 1);
+            return;
+        }
 
-            Integer count = map.get(data);
-            if (count == null) {
-                map.put(data, 1);
-            } else {
-                count++;
-                map.replace(data, count);
-            }
-        //}
-        //catch {
-
-        //}
+        Integer count = map.get(data);
+        if (count == null) {
+            map.put(data, 1);
+        } else {
+            count++;
+            map.replace(data, count);
+        }
     }
 
     private static void afficher(){
         for (Map.Entry m : map.entrySet()) {
             System.out.println(m.getKey() + " => " + m.getValue());
             try {
-                // m.getKey est un objet, il faut le récupt en int avant le cast char.
+                // m.getKey est un objet, il faut le récupérer en tant que int avant de le caster en char.
                 char c = (char) (int) m.getKey();
                 System.out.println(m.getKey() + " => " + m.getValue());
             }
