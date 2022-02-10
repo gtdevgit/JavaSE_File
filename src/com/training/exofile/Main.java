@@ -1,4 +1,4 @@
-package com.training.tetris;
+package com.training.exofile;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +9,7 @@ public class Main {
     // ".\fichier\file.txt"
     // private static String pathname;
 
-    private static TreeMap<Character, Integer> map = new TreeMap<>();
+    private static Map<Character, Integer> map = new TreeMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
 	    // write your code here
@@ -49,14 +49,9 @@ public class Main {
     private static void countCaractere(int data){
         System.out.println(data);
         Character c = (char) data;
-        try {
-            int count = map.get(c);
-            count++;
-            map.put(c, count);
-        }
-        catch (NullPointerException e) {
-            map.put(c, 1);
-        }
+        int count = map.getOrDefault(c, 0);
+        count++;
+        map.put(c, count);
     }
 
     private static void afficher(){
